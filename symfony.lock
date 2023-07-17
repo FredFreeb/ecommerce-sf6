@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "doctrine/annotations": {
         "version": "2.0",
         "recipe": {
@@ -73,6 +74,8 @@
             "./public/.htaccess"
         ]
     },
+=======
+>>>>>>> 850e2b3 (Add initial set of files)
     "symfony/console": {
         "version": "6.3",
         "recipe": {
@@ -85,6 +88,7 @@
             "./bin/console"
         ]
     },
+<<<<<<< HEAD
     "symfony/debug-bundle": {
         "version": "6.3",
         "recipe": {
@@ -97,6 +101,8 @@
             "./config/packages/debug.yaml"
         ]
     },
+=======
+>>>>>>> 850e2b3 (Add initial set of files)
     "symfony/flex": {
         "version": "2.3",
         "recipe": {
@@ -128,6 +134,7 @@
             "./src/Kernel.php"
         ]
     },
+<<<<<<< HEAD
     "symfony/mailer": {
         "version": "6.3",
         "recipe": {
@@ -200,6 +207,8 @@
             "./tests/bootstrap.php"
         ]
     },
+=======
+>>>>>>> 850e2b3 (Add initial set of files)
     "symfony/routing": {
         "version": "6.3",
         "recipe": {
@@ -212,6 +221,7 @@
             "./config/packages/routing.yaml",
             "./config/routes.yaml"
         ]
+<<<<<<< HEAD
     },
     "symfony/security-bundle": {
         "version": "6.3",
@@ -290,5 +300,7 @@
     },
     "twig/extra-bundle": {
         "version": "v3.6.1"
+=======
+>>>>>>> 850e2b3 (Add initial set of files)
     }
 }

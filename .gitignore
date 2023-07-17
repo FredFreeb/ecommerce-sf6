@@ -8,6 +8,7 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+<<<<<<< HEAD
 
 ###> phpunit/phpunit ###
 /phpunit.xml
@@ -18,3 +19,5 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+=======
+>>>>>>> 850e2b3 (Add initial set of files)
