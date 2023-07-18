@@ -7,7 +7,6 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
-<<<<<<< HEAD
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.15",
@@ -44,16 +43,6 @@
         "twbs/bootstrap": "^5.3",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
-=======
-        "symfony/console": "6.3.*",
-        "symfony/dotenv": "6.3.*",
-        "symfony/flex": "^2",
-        "symfony/framework-bundle": "6.3.*",
-        "symfony/runtime": "6.3.*",
-        "symfony/yaml": "6.3.*"
-    },
-    "require-dev": {
->>>>>>> 850e2b3 (Add initial set of files)
     },
     "config": {
         "allow-plugins": {
@@ -102,7 +91,6 @@
             "allow-contrib": false,
             "require": "6.3.*"
         }
-<<<<<<< HEAD
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
@@ -114,7 +102,5 @@
         "symfony/stopwatch": "6.3.*",
         "symfony/var-dumper": "6.3.*",
         "symfony/web-profiler-bundle": "6.3.*"
-=======
->>>>>>> 850e2b3 (Add initial set of files)
     }
 }
