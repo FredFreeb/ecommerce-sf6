@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\createdAtTrait;
 use App\Repository\ProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
 class Products
 {
+    use createdAtTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -28,9 +30,6 @@ class Products
     #[ORM\Column]
     private ?int $stock = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
-
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Categories $categories = null;
@@ -38,9 +37,14 @@ class Products
     #[ORM\OneToMany(mappedBy: 'products', targetEntity: Images::class, orphanRemoval: true)]
     private Collection $images;
 
+    #[ORM\OneToMany(mappedBy: 'products', targetEntity: OrdersDetails::class)]
+    private Collection $ordersDetails;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
+        $this->ordersDetails = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,18 +100,6 @@ class Products
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
-
     public function getCategories(): ?Categories
     {
         return $this->categories;
@@ -144,6 +136,36 @@ class Products
             // set the owning side to null (unless already changed)
             if ($image->getProducts() === $this) {
                 $image->setProducts(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrdersDetails>
+     */
+    public function getOrdersDetails(): Collection
+    {
+        return $this->ordersDetails;
+    }
+
+    public function addOrdersDetail(OrdersDetails $ordersDetail): static
+    {
+        if (!$this->ordersDetails->contains($ordersDetail)) {
+            $this->ordersDetails->add($ordersDetail);
+            $ordersDetail->setProducts($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrdersDetail(OrdersDetails $ordersDetail): static
+    {
+        if ($this->ordersDetails->removeElement($ordersDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($ordersDetail->getProducts() === $this) {
+                $ordersDetail->setProducts(null);
             }
         }
 
