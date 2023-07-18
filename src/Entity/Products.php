@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Trait\createdAtTrait;
+use App\Entity\Trait\SlugTrait;
 use App\Repository\ProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Products
 {
     use createdAtTrait;
+    use SlugTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
