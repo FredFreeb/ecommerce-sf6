@@ -14,6 +14,7 @@ class OrdersDetails
 
     #[ORM\Column]
     private ?int $price = null;
+    
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'ordersDetails')]
     #[ORM\JoinColumn(nullable: false)]

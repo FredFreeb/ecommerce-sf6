@@ -24,7 +24,7 @@ class Products
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $descritption = null;
+    private ?string $description = null;
 
     #[ORM\Column]
     private ?int $price = null;
@@ -66,14 +66,14 @@ class Products
         return $this;
     }
 
-    public function getDescritption(): ?string
+    public function getDescription(): ?string
     {
-        return $this->descritption;
+        return $this->description;
     }
 
-    public function setDescritption(string $descritption): static
+    public function setDescription(string $description): static
     {
-        $this->descritption = $descritption;
+        $this->description = $description;
 
         return $this;
     }

@@ -21,7 +21,7 @@ class Categories
     #[ORM\Column(length: 100)]
     private ?string $name = null;
 
-    #[ORM\Column]
+    #[ORM\Column (nullable:true)]
     private ?int $categoryOrder = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'categories')]

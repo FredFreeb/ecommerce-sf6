@@ -3,5 +3,33 @@
 {% block title %}Bienvenue!{% endblock %}
 
 {% block body %}
-<p>Accueil</p>
+    <main class="container">
+        <section class="row ">
+            <div class="col-12">
+                <h1>Bienvenue dans notre boutique</h1>
+            </div>
+            {% for category in categories %}
+                {% if category.parent == null %}
+                    <div class="col-12">
+                        <h2>{{category.name}}</h2>
+                    </div>
+                {% else %}
+                    <div class="col-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h3 class="card-title">{{category.name}}</h3>
+                                <a href="{{ path('categories_list', {slug: category.slug}) }}" class="btn btn-primary">Voir les produits</a>
+                            </div>
+                        </div>
+                        <a href="#"></a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <div class="col-12">
+                {{dump()}}
+            </div>
+        </section>
+    </main>
+
 {% endblock %}
