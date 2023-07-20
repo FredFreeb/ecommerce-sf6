@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Entity\Trait\createdAtTrait;
+use App\Entity\Trait\CreatedAtTrait;
 use App\Entity\Trait\SlugTrait;
 use App\Repository\ProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
 class Products
 {
-    use createdAtTrait;
+    use CreatedAtTrait;
     use SlugTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]

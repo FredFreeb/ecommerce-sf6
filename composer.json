@@ -56,12 +56,18 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/"
-        }
+        },
+        "classmap": [
+            "migrations"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
             "App\\Tests\\": "tests/"
-        }
+        },
+        "classmap": [
+            "migrations"
+        ]
     },
     "replace": {
         "symfony/polyfill-ctype": "*",
