@@ -36,11 +36,11 @@ class Coupons
     #[ORM\Column]
     private ?bool $is_valid = null;
 
-    #[ORM\ManyToOne(inversedBy: 'coupons')]
+    #[ORM\ManyToOne(inversedBy: 'Coupons')]
     #[ORM\JoinColumn(nullable: false)]
     private ?CouponTypes $coupon_types = null;
 
-    #[ORM\OneToMany(mappedBy: 'coupons', targetEntity: Orders::class)]
+    #[ORM\OneToMany(mappedBy: 'Coupons', targetEntity: Orders::class)]
     private Collection $orders;
 
     public function __construct()

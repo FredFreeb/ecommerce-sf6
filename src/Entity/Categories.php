@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: CategoriesRepository::class)]
 class Categories
 {
@@ -21,11 +22,11 @@ class Categories
     #[ORM\Column(length: 100)]
     private ?string $name = null;
 
-    #[ORM\Column (nullable:true)]
+    #[ORM\Column(nullable: true)]
     private ?int $categoryOrder = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'categories')]
-    #[ORM\JoinColumn(onDelete:'CASCADE')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?self $parent = null;
 
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
@@ -56,7 +57,7 @@ class Categories
 
         return $this;
     }
-    
+
     public function getCategoryOrder(): ?int
     {
         return $this->categoryOrder;

@@ -14,7 +14,7 @@
                     <div class="carousel-inner">
                         {% for image in product.images %}
                             <div class="carousel-item {{ (loop.first) ? 'active' : '' }}" >
-                                <img src="{{ asset('assets/uploads/' ~ image.name )}}" class="d-block w-100" alt="...">
+                                <img src="{{ asset('assets/uploads/products/mini/300x300-' ~ image.name )}}" class="d-block w-100" alt="{{ image.name }}">
                                 {# {{ dump(image) }} #}
                             </div>
                         {% endfor %}
@@ -34,11 +34,18 @@
                 <p> {{ product.description}} </p>
                 <p>Catégorie : {{product.categories.name}} </p>
                 <p>Prix : {{ product.price /100}} € </p>
-                {% if product.stock > 0 %}
-                    <a href="#" class="btn btn-success">Ajouter au Panier</a>
-                {% else %}
-                    <p class="text-danger">Produit actuellement indisponible!</p>
-                {% endif %}
+                <div class="d-flex justify-content-between ">
+                    {% if product.stock > 0 %}
+                        <a href="#" class="btn btn-success">Ajouter au Panier</a>
+                    {% else %}
+                        <p class="text-danger">Produit actuellement indisponible!</p>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_PRODUCT_ADMIN') %}
+                        <a class="btn btn-success" href="{{ path('admin_products_edit', {id: product.id}) }}">Modifier le produit</a>
+                        <a class="btn btn-danger" href="{{ path('admin_products_delete', {id: product.id}) }}">Supprimer le produit</a>
+                    {% endif %}
+                </div>
             </div>
         </section>
     </main>
