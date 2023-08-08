@@ -19,17 +19,16 @@ class ImagesFixtures extends Fixture implements DependentFixtureInterface
             $image->setName($faker->image(null, 640, 480));
             $product = $this->getReference('prod-'.rand(1, 10));
             $image->setProducts($product);
-
             $manager->persist($image);
         }
 
         $manager->flush();
     }
 
-    public function getDependencies():array
+    public function getDependencies(): array
     {
         return [
             ProductsFixtures::class
-        ];
+        ];  
     }
 }

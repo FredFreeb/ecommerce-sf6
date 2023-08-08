@@ -10,15 +10,15 @@ class Images
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $name;
 
-    #[ORM\ManyToOne(inversedBy: 'images')]
+    #[ORM\ManyToOne(targetEntity: Products::class, inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Products $products = null;
+    private $products;
 
     public function getId(): ?int
     {
@@ -30,7 +30,7 @@ class Images
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -42,7 +42,7 @@ class Images
         return $this->products;
     }
 
-    public function setProducts(?Products $products): static
+    public function setProducts(?Products $products): self
     {
         $this->products = $products;
 

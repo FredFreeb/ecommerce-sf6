@@ -2,12 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\User;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use App\Entity\Users;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -19,37 +19,37 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class,[
+            ->add('email', EmailType::class, [
                 'attr' => [
                     'class' => 'form-control'
                 ],
                 'label' => 'E-mail'
             ])
-            ->add('lastname', TextType::class,[
+            ->add('lastname', TextType::class, [
                 'attr' => [
                     'class' => 'form-control'
                 ],
                 'label' => 'Nom'
             ])
-            ->add('firstname', TextType::class,[
+            ->add('firstname', TextType::class, [
                 'attr' => [
                     'class' => 'form-control'
                 ],
                 'label' => 'Prénom'
             ])
-            ->add('address', TextType::class,[
+            ->add('address', TextType::class, [
                 'attr' => [
                     'class' => 'form-control'
                 ],
                 'label' => 'Adresse'
             ])
-            ->add('zipcode', TextType::class,[
+            ->add('zipcode', TextType::class, [
                 'attr' => [
                     'class' => 'form-control'
                 ],
                 'label' => 'Code postal'
             ])
-            ->add('city', TextType::class,[
+            ->add('city', TextType::class, [
                 'attr' => [
                     'class' => 'form-control'
                 ],
@@ -62,7 +62,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
-                'label' => 'Veuillez acceptez les r.g.p.d '
+                'label' => 'En m\'inscrivant à ce site j\'accepte...'
             ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
@@ -83,6 +83,7 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
+                'label' => 'Mot de passe'
             ])
         ;
     }
@@ -90,7 +91,7 @@ class RegistrationFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Users::class,
         ]);
     }
 }

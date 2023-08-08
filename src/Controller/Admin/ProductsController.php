@@ -2,10 +2,10 @@
 
 namespace App\Controller\Admin;
 
-// Importation des classes nécessaires
 use App\Entity\Images;
 use App\Entity\Products;
 use App\Form\ProductsFormType;
+use App\Repository\ProductsRepository;
 use App\Service\PictureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,87 +18,81 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('/admin/produits', name: 'admin_products_')]
 class ProductsController extends AbstractController
 {
-    // Définition de la route par défaut pour l'index des produits dans l'administration
-    #[Route('/', name:'index')]
-    public function index(): Response
+    #[Route('/', name: 'index')]
+    public function index(ProductsRepository $productsRepository): Response
     {
-        // Cette méthode affiche une vue Twig pour la page d'index des produits dans l'administration
-        return $this->render('admin/products/index.html.twig');
+        $produits = $productsRepository->findAll();
+        return $this->render('admin/products/index.html.twig', ['produits' => $produits]);
     }
+    
 
-     // Les autres méthodes (add, edit, delete, deleteImage) sont similaires et gèrent l'ajout, l'édition, la suppression, etc.
-
-    // Méthode pour ajouter un nouveau produit
-    #[Route('/ajout', name:'add')]
+    #[Route('/ajout', name: 'add')]
     public function add(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, PictureService $pictureService): Response
     {
-        // On vérifie si l'utilisateur a le rôle ROLE_ADMIN
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        
-        // Création d'une nouvelle instance de la classe Products
+
+        //On crée un "nouveau produit"
         $product = new Products();
 
-        // Création du formulaire en utilisant le ProductsFormType et le produit nouvellement créé
+        // On crée le formulaire
         $productForm = $this->createForm(ProductsFormType::class, $product);
 
-        // Traitement de la requête du formulaire
+        // On traite la requête du formulaire
         $productForm->handleRequest($request);
-        
-        // Vérification si le formulaire est soumis et valide
+
+        //On vérifie si le formulaire est soumis ET valide
         if($productForm->isSubmitted() && $productForm->isValid()){
-            // Récupération des images du formulaire
+            // On récupère les images
             $images = $productForm->get('images')->getData();
             
-            // Parcours des images et ajout au produit
             foreach($images as $image){
-                // Définition du dossier de destination pour les images
+                // On définit le dossier de destination
                 $folder = 'products';
 
-                // Appel du service pour ajouter l'image avec une taille spécifiée
+                // On appelle le service d'ajout
                 $fichier = $pictureService->add($image, $folder, 300, 300);
 
-                // Création d'une instance de Images pour chaque image
                 $img = new Images();
                 $img->setName($fichier);
                 $product->addImage($img);
             }
-            
-            // Génération du slug à partir du nom du produit
+
+            // On génère le slug
             $slug = $slugger->slug($product->getName());
             $product->setSlug($slug);
 
-            // Conversion du prix en centimes pour la base de données
-            $prix = $product->getPrice()*100;
-            $product->setPrice($prix);
+            // On arrondit le prix 
+            // $prix = $product->getPrice() * 100;
+            // $product->setPrice($prix);
 
-            // Stockage du produit en base de données
+            // On stocke
             $em->persist($product);
             $em->flush();
 
-            // Ajout d'un message flash pour informer que le produit a été ajouté avec succès
-            $this->addFlash('succes','produit ajouté avec succès');
+            $this->addFlash('success', 'Produit ajouté avec succès');
 
-            // Redirection vers la liste des produits
+            // On redirige
             return $this->redirectToRoute('admin_products_index');
         }
 
-        // Affichage du formulaire de création de produit
-        return $this->render('admin/products/add.html.twig', [
-            'productForm'=>$productForm->createView(),
-            'product'=> $product
-        ]);
+
+        // return $this->render('admin/products/add.html.twig',[
+        //     'productForm' => $productForm->createView()
+        // ]);
+
+        return $this->renderForm('admin/products/add.html.twig', compact('productForm'));
+        // ['productForm' => $productForm]
     }
-    // Méthode pour modifier un produit
-    #[Route('/edition/{id}', name:'edit')]
-    public function edit(Products $product,Request $request, EntityManagerInterface $em, SluggerInterface $slugger, PictureService $pictureService): Response
+
+    #[Route('/edition/{id}', name: 'edit')]
+    public function edit(Products $product, Request $request, EntityManagerInterface $em, SluggerInterface $slugger, PictureService $pictureService): Response
     {
-        // on verifie si l'utilisateur peut éditer avec le voter
+        // On vérifie si l'utilisateur peut éditer avec le Voter
         $this->denyAccessUnlessGranted('PRODUCT_EDIT', $product);
 
-        // on divise le prix par 100 pour l'affichage 
-
-        $prix = $product->getPrice()/100;
-        $product->setPrice($prix);
+        // On divise le prix par 100
+        // $prix = $product->getPrice() / 100;
+        // $product->setPrice($prix);
 
         // On crée le formulaire
         $productForm = $this->createForm(ProductsFormType::class, $product);
@@ -123,14 +117,14 @@ class ProductsController extends AbstractController
                 $product->addImage($img);
             }
             
+            
             // On génère le slug
             $slug = $slugger->slug($product->getName());
             $product->setSlug($slug);
 
-            // on multiplie le prix pour la database 
-
-            $prix = $product->getPrice()*100;
-            $product->setPrice($prix);
+            // On arrondit le prix 
+            // $prix = $product->getPrice() * 100;
+            // $product->setPrice($prix);
 
             // On stocke
             $em->persist($product);
@@ -147,19 +141,41 @@ class ProductsController extends AbstractController
             'productForm' => $productForm->createView(),
             'product' => $product
         ]);
+
+        // return $this->renderForm('admin/products/edit.html.twig', compact('productForm'));
+        // ['productForm' => $productForm]
     }
 
-    #[Route('/suppression/{id}', name:'delete')]
-    public function delete(Products $product): Response
+    #[Route('/suppression/{id}', name: 'delete')]
+    public function delete(Products $product, EntityManagerInterface $em, PictureService $pictureService): Response
     {
-        // on verifie si l'utilisateur peut supprimer avec le voter
+        // On vérifie si l'utilisateur peut supprimer avec le Voter
         $this->denyAccessUnlessGranted('PRODUCT_DELETE', $product);
-
-        return $this->render('admin/products/index.html.twig');
-
+    
+        // Avant de supprimer le produit, dissociez les images et supprimez-les si nécessaire
+        foreach ($product->getImages() as $image) {
+            // Dissocier l'image du produit
+            $image->setProducts(null);
+            // Supprimer l'image physiquement si nécessaire
+            if ($pictureService->delete($image->getName(), 'products', 300, 300)) {
+                // Supprimer l'image de la base de données
+                $em->remove($image);
+            }
+        }
+    
+        // Supprimer le produit de la base de données
+        $em->remove($product);
+        $em->flush();
+    
+        // Ajoutez un message flash pour indiquer la suppression réussie
+        $this->addFlash('success', 'Produit supprimé avec succès');
+    
+        // Redirigez vers la liste des produits (ou une autre page si nécessaire)
+        return $this->redirectToRoute('admin_products_index');
     }
+    
 
-    #[Route('/suppression/image/{id}', name:'delete_image', methods: ['DELETE'])]
+    #[Route('/suppression/image/{id}', name: 'delete_image', methods: ['DELETE'])]
     public function deleteImage(Images $image, Request $request, EntityManagerInterface $em, PictureService $pictureService): JsonResponse
     {
         // On récupère le contenu de la requête
@@ -183,4 +199,5 @@ class ProductsController extends AbstractController
 
         return new JsonResponse(['error' => 'Token invalide'], 400);
     }
+
 }

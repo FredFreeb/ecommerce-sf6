@@ -1,51 +1,48 @@
 {% extends "base.html.twig" %}
 
-{% block title %} Détails de {{ product.name }} {% endblock %}
+{% block title %}Détails de
+    {{ product.name }}
+{% endblock %}
 
 {% block body %}
-
     <main class="container">
-        <section class="row ">
+        <section class="row">
             <div class="col-12">
-                <h1>{{ product.name }} </h1>
+                <h1>{{ product.name }}</h1>
             </div>
             <div class="col-6">
-                <div id="carouselExample" class="carousel slide">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        {% for iteration in 1..product.images|length %}
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ iteration - 1 }}" {{ (loop.first ) ?'class="active" aria-current="true"' : '' }} aria-label="Slide {{ iteration }}"></button>
+                        {% endfor %}
+                    </div>
                     <div class="carousel-inner">
                         {% for image in product.images %}
-                            <div class="carousel-item {{ (loop.first) ? 'active' : '' }}" >
-                                <img src="{{ asset('assets/uploads/products/mini/300x300-' ~ image.name )}}" class="d-block w-100" alt="{{ image.name }}">
-                                {# {{ dump(image) }} #}
+                            <div class="carousel-item {{ (loop.first ) ? 'active' : '' }}">
+                                <img src="{{ asset('assets/uploads/products/mini/300x300-') ~ image.name }}" class="d-block w-100" alt="{{ product.name }}">
                             </div>
                         {% endfor %}
                     </div>
-                
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
                 </div>
             </div>
             <div class="col-6">
-                <p> {{ product.description}} </p>
-                <p>Catégorie : {{product.categories.name}} </p>
-                <p>Prix : {{ product.price /100}} € </p>
-                <div class="d-flex justify-content-between ">
-                    {% if product.stock > 0 %}
-                        <a href="#" class="btn btn-success">Ajouter au Panier</a>
-                    {% else %}
-                        <p class="text-danger">Produit actuellement indisponible!</p>
-                    {% endif %}
-
-                    {% if is_granted('ROLE_PRODUCT_ADMIN') %}
-                        <a class="btn btn-success" href="{{ path('admin_products_edit', {id: product.id}) }}">Modifier le produit</a>
-                        <a class="btn btn-danger" href="{{ path('admin_products_delete', {id: product.id}) }}">Supprimer le produit</a>
-                    {% endif %}
-                </div>
+                <p>{{ product.description }}</p>
+                <p>Catégorie : {{ product.categories.name }}</p>
+                <p>Prix : {{ product.price / 100 }} €</p>
+                {% if product.stock > 0 %}
+                    <a href="{{ path('cart_add', {id: product.id}) }}" class="btn btn-success">Ajouter au panier</a>
+                {% else %}
+                    <p class="text-danger">Temporairement en rupture de stock</p>
+                {% endif %}
             </div>
         </section>
     </main>

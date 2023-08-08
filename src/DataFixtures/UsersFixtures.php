@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\User;
+use App\Entity\Users;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -14,17 +14,17 @@ class UsersFixtures extends Fixture
     public function __construct(
         private UserPasswordHasherInterface $passwordEncoder,
         private SluggerInterface $slugger
-        )
-    {}
+    ){}
+
     public function load(ObjectManager $manager): void
     {
-        $admin = new User();
+        $admin = new Users();
         $admin->setEmail('admin@demo.fr');
-        $admin->setLastname('Fribel');
-        $admin->setFirstname('Frédéric');
-        $admin->setAddress('99 rue du dr Faton');
-        $admin->setZipcode('41100');
-        $admin->setCity('Vendôme');
+        $admin->setLastname('Gambier');
+        $admin->setFirstname('Benoit');
+        $admin->setAddress('12 rue du port');
+        $admin->setZipcode('75001');
+        $admin->setCity('Paris');
         $admin->setPassword(
             $this->passwordEncoder->hashPassword($admin, 'admin')
         );
@@ -35,7 +35,7 @@ class UsersFixtures extends Fixture
         $faker = Faker\Factory::create('fr_FR');
 
         for($usr = 1; $usr <= 5; $usr++){
-            $user = new User();
+            $user = new Users();
             $user->setEmail($faker->email);
             $user->setLastname($faker->lastName);
             $user->setFirstname($faker->firstName);
@@ -45,7 +45,6 @@ class UsersFixtures extends Fixture
             $user->setPassword(
                 $this->passwordEncoder->hashPassword($user, 'secret')
             );
-
             $manager->persist($user);
         }
 
